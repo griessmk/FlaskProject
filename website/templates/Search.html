@@ -1,0 +1,16 @@
+{% extends "base.html" %} {% block title %}Search for Books{% endblock %} {% block content %}
+      <h3 align="center">Search for Books</h3>
+      <div class="form-group">
+        <label for="Search">Search for books</label>
+        <input
+          type="text"
+          class="form-control"
+          id="search_query"
+          name="search_query"
+          placeholder="Type a book title, author, or ISBN"
+        />
+      </div>
+      <br />
+      <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+{% endblock %}
