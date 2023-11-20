@@ -1,16 +1,49 @@
-{% extends "base.html" %} {% block title %}Search for Books{% endblock %} {% block content %}
-      <h3 align="center">Search for Books</h3>
-      <div class="form-group">
-        <label for="Search">Search for books</label>
-        <input
-          type="text"
-          class="form-control"
-          id="search_query"
-          name="search_query"
-          placeholder="Type a book title, author, or ISBN"
-        />
-      </div>
-      <br />
-      <button type="submit" class="btn btn-primary">Search</button>
-    </form>
+{% extends "base.html" %} 
+{% block title %}Search for Book Reviews{% endblock %} 
+{% block content %}
+  <h3 align="center">Search for Book Reviews</h3>
+  <form method="get" action="{{ url_for('views.search') }}">
+    <div class="form-group">
+      <label for="Search">Search for books</label>
+      <input
+        type="text"
+        class="form-control"
+        id="search_query"
+        name="search_query"
+        placeholder="Type a book title, author, or ISBN"
+      />
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">Search</button>
+  </form>
+
+  {% if results %}
+    <div class="results">
+      <h4>Search Results:</h4>
+      <ul>
+        {% for book in results %}
+          <li>
+            <!-- Book Art -->
+            {% if book.volumeInfo.imageLinks and book.volumeInfo.imageLinks.thumbnail %}
+              <img src="{{ book.volumeInfo.imageLinks.thumbnail }}" alt="Book cover of {{ book.volumeInfo.title }}">
+            {% endif %}
+            
+            <!-- Hyperlink and Title -->
+            <a href="https://www.google.com/books/edition/{{ book.volumeInfo.title | replace(' ', '_') }}/{{ book.id }}" target="_blank">
+              <h5>{{ book.volumeInfo.title }}</h5>
+            </a>
+
+            <!-- Authors and Rating -->
+            <p>Authors: {{ book.volumeInfo.authors | join(', ') }}</p>
+            <p>Rating: {{ book.volumeInfo.averageRating | default('Not available') }}</p>
+
+            <!-- Book Reviews or Description -->
+            {% if book.volumeInfo.description %}
+              <p>{{ book.volumeInfo.description }}</p>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
 {% endblock %}
