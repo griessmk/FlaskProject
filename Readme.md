@@ -42,7 +42,8 @@ The database confirms the note deletion.
 Flask App to User:
 The Flask app sends a JSON response indicating success or failure of the deletion process.
 
-![image](https://github.com/griessmk/FlaskProject--Version-1/assets/122305497/99e4881c-01c2-4473-ad4e-970036eb2ec7)
+![image](https://github.com/griessmk/FlaskProject--Version-1/assets/122305497/e24474d3-0363-455a-921e-48f3aa95d60f)
+
 
 
 
