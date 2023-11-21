@@ -42,6 +42,7 @@ The database confirms the note deletion.
 Flask App to User:
 The Flask app sends a JSON response indicating success or failure of the deletion process.
 
+
 COMMUNICATION CONTRACT
 Preamble
 This communication contract is established to ensure effective collaboration, clear communication, and a positive working relationship between group members for the duration of the software engineering project in our college class. The contract aligns with the ground rules we have previously set and serves as a guide for our interactions.
