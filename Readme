@@ -1,0 +1,44 @@
+UML Sequence Diagram Description
+Actors and Components:
+
+Client/User Interface: The interface where users interact, typically a web browser.
+Flask Web Application: Your Flask server, handling requests and responses.
+Google Books API: The external API service providing book data.
+Database: The database where notes are stored (for / route).
+Flow for Search Functionality (/search Route):
+
+User to Flask App:
+The user inputs a search query in the UI and submits the request.
+The Flask app receives the GET request with the search query.
+Flask App to Google Books API:
+The Flask app constructs a request with the search query and API key.
+The request is sent to the Google Books API.
+Google Books API to Flask App:
+The API processes the request and sends back a response.
+The response contains the book data in JSON format.
+Flask App to User:
+The Flask app processes the JSON data.
+It then renders the search.html template with the book data and sends it to the user's browser.
+Flow for Adding a Note (/ Route with POST Method):
+
+User to Flask App:
+The user submits a note via the UI.
+The Flask app receives the POST request with the note data.
+Flask App to Database:
+The app creates a new Note object and saves it to the database.
+Database to Flask App:
+The database confirms the successful addition of the note.
+Flask App to User:
+The Flask app sends a success message and renders the home.html page with the updated notes.
+Flow for Deleting a Note (/delete-note Route):
+
+User to Flask App:
+The user initiates a note deletion request.
+The Flask app receives the POST request with the note ID.
+Flask App to Database:
+The app queries the database for the note and deletes it.
+Database to Flask App:
+The database confirms the note deletion.
+Flask App to User:
+The Flask app sends a JSON response indicating success or failure of the deletion process.
+
