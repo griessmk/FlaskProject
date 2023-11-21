@@ -35,7 +35,7 @@ def search():
             'q': search_query,
             'key': api_key
         }
-        # Ensure you use the correct URL for the Google Books API
+        # URL for the Google Books API
         response = requests.get('https://www.googleapis.com/books/v1/volumes', params=params)
         
         if response.ok:
@@ -45,6 +45,26 @@ def search():
         else:
             flash('Error fetching results from Google Books', category='error')
     return render_template("search.html", user=current_user, results=results)
+
+def request_books(search_query, api_key):
+    params = {'q': search_query, 'key': api_key}
+    response = requests.get('https://www.googleapis.com/books/v1/volumes', params=params)
+    if response.ok:
+        return response.json()
+    else:
+        raise Exception("Error in fetching data")
+
+
+def search_books_in_app(search_query):
+    url = "http://localhost:5000/search"
+    params = {'search_query': search_query}
+    response = requests.get(url, params=params)
+    if response.ok:
+        return response.json()  # Or process as needed
+    else:
+        raise Exception("Error in app search")
+
+
 
 
 
