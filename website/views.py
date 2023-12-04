@@ -2341,21 +2341,18 @@ def search():
     search_query = request.args.get('search_query')
     results = []
     if search_query:
-        # Use a string for the API key
-        api_key = 'AIzaSyAy9h5zz1UiXzf9FnqiIPg0P0AMk3VGjbw'  
-        params = {
-            'q': search_query,
-            'key': api_key
-        }
-        # Ensure you use the correct URL for the Google Books API
-        response = requests.get('https://www.googleapis.com/books/v1/volumes', params=params)
-        
-        if response.ok:
-            data = response.json()
-            results = data.get('items', [])
-            # Further processing of results...
-        else:
-            flash('Error fetching results from Google Books', category='error')
+        try:
+            # Making a POST request to the microservice
+            response = requests.post('http://localhost:12345/retrieve-book-data', search_query)
+            
+            if response.ok:
+                data = response.json()
+                results = data  # Adjust according to the structure of the response
+            else:
+                flash('Error fetching results from microservice', category='error')
+        except requests.RequestException:
+            flash('Error connecting to microservice', category='error')
+
     return render_template("search.html", user=current_user, results=results)
 
 
@@ -2377,13 +2374,26 @@ def get_baby_names():
     gender = request.args.get('gender', 'Both')
     num_names = int(request.args.get('num_names', 100))
 
-    # Logic to return names based on gender and number
-    if gender == 'Boy':
-        return jsonify(random.sample(boy_names, min(num_names, len(boy_names))))
-    elif gender == 'Girl':
-        return jsonify(random.sample(girl_names, min(num_names, len(girl_names))))
-    elif gender == 'Neutral':
-        return jsonify(random.sample(neutral_names, min(num_names, len(neutral_names))))
-    else:  # Both genders
-        half = num_names // 2
-        return jsonify(random.sample(boy_names, min(half, len(boy_names))) + random.sample(girl_names, min(half, len(girl_names))))
+    match request.args.get('source'):
+        case 'Top 1000':
+            match gender:
+                case 'Boy':
+                    return jsonify(boy_names[:num_names])
+                case 'Girl':
+                    return jsonify(girl_names[:num_names])
+                case 'Neutral':
+                    return jsonify(random.sample(neutral_names, num_names))
+                case 'Both':
+                    return jsonify(boy_names[:num_names // 2] + girl_names[:num_names // 2])
+        case 'Random':
+            match gender:
+                case 'Boy':
+                    return jsonify(random.sample(boy_names, min(num_names, len(boy_names))))
+                case 'Girl':
+                    return jsonify(random.sample(girl_names, min(num_names, len(girl_names))))
+                case 'Neutral':
+                    return jsonify(random.sample(neutral_names, min(num_names, len(neutral_names))))
+                case 'Both':
+                    half = num_names // 2
+                    return jsonify(random.sample(boy_names, min(half, len(boy_names))) +
+                                   random.sample(girl_names, min(half, len(girl_names))))
